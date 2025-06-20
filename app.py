@@ -7,7 +7,7 @@ import pytz
 app = Flask(__name__)
 app.secret_key = os.urandom(24) 
 
-API_KEY = os.getenv('API_KEY', 'dcc938c7291cf3d32dbc5d60') 
+API_KEY = os.getenv('API_KEY', 'SUA CHAVE API AQUI') 
 
 EXCHANGE_RATE_BASE_URL = 'https://v6.exchangerate-api.com/v6/'
 
