@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"],
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: white;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result-box {
+            background-color: #e9f5ee;
+            border: 1px solid #d4edda;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            text-align: left;
+        }
+        .result-box p {
+            margin: 5px 0;
+            color: #28a745;
+            font-size: 1.1em;
+        }
+        .result-box .time-info {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        /* Estilos para mensagens Flash */
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        .flash-message {
+            padding: 12px 18px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1em;
+            text-align: center;
+        }
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash-message.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Conversor de Moedas</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+          <li class="flash-message {{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="amount">Valor:</label>
+        <input type="number" step="0.01" name="amount" id="amount" placeholder="Ex: 100" required>
+
+        <label for="from_c">De:</label>
+        <select name="from_c" id="from_c" required>
+            {% for code, name in currencies.items() %}
+                <option value="{{ code }}" {% if from_c_code == code %}selected{% elif loop.first %}selected{% endif %}>
+                    {{ code }} - {{ name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="to_c">Para:</label>
+        <select name="to_c" id="to_c" required>
+            {% for code, name in currencies.items() %}
+                <option value="{{ code }}" {% if to_c_code == code %}selected{% elif loop.first %}selected{% endif %}>
+                    {{ code }} - {{ name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Converter</button>
+    </form>
+
+    {% if result is defined %}
+        <div class="result-box">
+            <p><strong>Resultado da Conversão:</strong></p>
+            <p>{{ from_c_symbol }} {{ amount }} ({{ from_c_name }}) é equivalente a</p>
+            <p><strong>{{ to_c_symbol }} {{ result }} ({{ to_c_name }})</strong></p>
+            <p class="time-info">Dados atualizados em: {{ time }}</p>
+        </div>
+    {% endif %}
+
+</body>
+</html>
