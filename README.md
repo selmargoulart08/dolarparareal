@@ -18,8 +18,6 @@ Certifique-se de ter o Python (versão 3.8 ou superior recomendada) e o pip inst
 Bash
 
 git clone https://github.com/selmargoulart08/dolarparareal.git
-cd SEU_REPOSITORIO/conversor_moedas # Ou o nome da sua pasta raiz do projeto
-(Lembre-se de substituir SEU_USUARIO e SEU_REPOSITORIO pelo seu nome de usuário e nome do repositório no GitHub).
 
 2. Criar e Ativar um Ambiente Virtual (Recomendado)
 É uma boa prática usar ambientes virtuais para isolar as dependências do projeto.
